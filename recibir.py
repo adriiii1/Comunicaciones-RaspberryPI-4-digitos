@@ -1,0 +1,42 @@
+import RPi.GPIO as GPIO
+import time
+from codigos import  *
+
+
+
+
+REC = 18
+CLOCK = 23
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(REC, GPIO.IN)
+GPIO.setup(CLOCK, GPIO.IN)
+cod = Codigos()
+
+
+##primera, segunda =cod.getCodigoSecuencia(a)
+##print(primera)
+##print(segunda)
+
+
+
+print("Recibe")
+while True:
+    caracter=""
+    for i in range(4):
+        while GPIO.input(CLOCK) == GPIO.LOW:
+            pass
+        if GPIO.input(REC) == GPIO.LOW:
+            caracter+="0"
+            print("Recibe 0")
+        else:
+            caracter += "1"
+            print("Recibe 1")
+        time.sleep(0.1)
+        while GPIO.input(CLOCK) == GPIO.HIGH:
+            pass
+    print(cod.getCaracter(caracter))
+
+
+
+GPIO.cleanup()
